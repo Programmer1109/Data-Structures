@@ -1,4 +1,4 @@
-/*        // Singly Linked List
+    // Singly Linked List
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -370,4 +370,4 @@ void refresh(){
     }
     start = NULL;
 }
-*/
+
