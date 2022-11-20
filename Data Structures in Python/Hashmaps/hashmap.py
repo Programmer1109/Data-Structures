@@ -31,18 +31,16 @@ class Hash_Table:
             self.updateHashEntry(insert_key, insert_value)
 
     def updateHashEntry(self, updateKey, updateValue):
-        hashIndex = 0
-        while hashIndex != self.size: 
-            if self.hashArray[hashIndex] != None:
-                if self.hashArray[hashIndex].key == updateKey:
-                    self.hashArray[hashIndex].key = updateKey
-                    self.hashArray[hashIndex].data = updateValue
-                    return
-                else:
-                    hashIndex = hashIndex + 1
+        hashIndex = self.hashFunction(updateKey) 
+        if self.hashArray[hashIndex] != None:
+            if self.hashArray[hashIndex].key == updateKey:
+                self.hashArray[hashIndex].key = updateKey
+                self.hashArray[hashIndex].data = updateValue
+                return
             else:
-                hashIndex = hashIndex + 1
-        print("Error:- Update is not Possible, Hash Index is already occupied!!!")
+                print("Error:- Update is not Possible, no such Key found in Hash Table !!!")
+        else:            
+            print("Error:- Update is not Possible, no element found at given address !!!")
         
     def searchHashEntry(self, searchKey):
         # print(f"Search Key = {searchKey}")
@@ -117,4 +115,3 @@ while True:
     else:
         print("Invalid Choice!!!")
 print("\n********************************\tEND OF PROGRAM\t********************************\n")
-
