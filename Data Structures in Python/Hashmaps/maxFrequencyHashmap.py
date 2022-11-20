@@ -1,4 +1,4 @@
-#                                                 MAXIMUM FREQUENCY OF ELEMENTS
+#                                                    NUMBER OF TIMES AN ELEMENT IS REPEATED IN AN ARRAY
 
 class Node:
 
@@ -8,7 +8,7 @@ class Node:
 
 
 
-class Hash_Table:
+class HashTable:
     
     def __init__(self, length):
         self.size = length
@@ -27,8 +27,9 @@ class Hash_Table:
             self.hashArray[hashIndex] = hashElement
             self.hashArray[hashIndex].frequency = self.hashArray[hashIndex].frequency + 1
             self.entries = self.entries + 1
-        elif self.hashArray[hashIndex].key == insert_key:
-            self.hashArray[hashIndex].frequency = self.hashArray[hashIndex].frequency + 1
+        else:
+            if self.hashArray[hashIndex].key == insert_key:
+                self.hashArray[hashIndex].frequency = self.hashArray[hashIndex].frequency + 1
 
     def hashFunction(self, index):
         return index%self.size
@@ -36,26 +37,37 @@ class Hash_Table:
 
 
 #               MAIN CODE STARTS HERE
+print("\n*************************\tFREQUENCY OF ELEMENT IN ARRAY\t*************************\n")
 inputArray = []
 arraySize = int(input(print("Enter the size of Array:- ")))
-for index in range(0, arraySize):
-    element = int(input(print("Enter value of element = ")))
-    inputArray.append(element)
-# Create a Hash Table with the Array Elements
-Hashmap = Hash_Table(arraySize)
-for value in inputArray:
-    Hashmap.insertHashEntry(value)
-# Search for most frequent value
-mostFrequent = 0
-mostFrequentKey = inputArray[0]
-index = 0 
-while index != arraySize:
-    if Hashmap.hashArray[index] != None:
-        if Hashmap.hashArray[index].frequency > mostFrequent:
-            mostFrequent = Hashmap.hashArray[index].frequency
-            mostFrequentKey = Hashmap.hashArray[index].key
+if arraySize != 0:
+    for index in range(0, arraySize):
+        element = int(input(print("Enter value of element = ")))
+        inputArray.append(element)
+    # Find Max Value Element in the input array
+    #      When any number is divided by (Max Value Element + 1), it would give that same no. as remainder.
+    maxValueList = inputArray[0]
+    for index in range(0, arraySize):
+        if inputArray[index] > maxValueList:
+            maxValueList = inputArray[index]
+    # Create a Hash Table with the Array Elements
+    Hashmap = HashTable(maxValueList+1)
+    for value in inputArray:
+        Hashmap.insertHashEntry(value)
+    # Search for most frequent value
+    mostFrequent = 0
+    mostFrequentKey = inputArray[0]
+    index = 0 
+    while index != arraySize:
+        if Hashmap.hashArray[index] != None:
+            if Hashmap.hashArray[index].frequency > mostFrequent:
+                mostFrequent = Hashmap.hashArray[index].frequency
+                mostFrequentKey = Hashmap.hashArray[index].key
+            else:
+                index += 1
         else:
             index += 1
-    else:
-        index += 1
-print(f"Solution:-\n\tElement Value = {mostFrequentKey}\tElement Frequency = {mostFrequent}")
+    print(f"Solution:-\n\tElement Value = {mostFrequentKey}\tElement Frequency = {mostFrequent}")
+else:
+    print("Error:- Invalid Size for an Array!!!")
+print("\n********************************\tEND OF PROGRAM\t********************************\n")
