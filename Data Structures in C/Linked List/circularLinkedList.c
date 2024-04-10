@@ -147,40 +147,44 @@ struct node* insert_before_node(struct node* head){
         int data, val;
         printf("\nEnter the Roll No. before which node is to be inserted:- ");
         scanf("%d", &val);
-        printf("\nEnter data for the node:- ");
-        scanf("%d", &data);
-        newNode = (struct node*) malloc(sizeof(struct node));
-        if(newNode != NULL){
-            printf("\nSuccess:- Memory Allocated Successfully...");    
-            if(searching(head, val) != -1){
-                if(head->rollNo == val){
-                    newNode->rollNo = data;
-                    struct node* last;
-                    last = head;
-                    while(last->next != head)
-                        last = last->next;
-                    newNode->next = head;
-                    head = newNode;
-                    last->next = newNode;
-                }
-                else{
-                    newNode->rollNo = data;
-                    struct node *ptr;
-                    ptr = start;
-                    while(ptr->rollNo != val){
-                        printf("\nTraversing through the List...");
-                        prevPtr = ptr;
-                        ptr = ptr->next;
+        if(searching(head, val) != -1){
+            printf("\nEnter data for the node:- ");
+            scanf("%d", &data);
+            newNode = (struct node*) malloc(sizeof(struct node));
+            if(newNode != NULL){
+                printf("\nSuccess:- Memory Allocated Successfully...");    
+                if(searching(head, val) != -1){
+                    if(head->rollNo == val){
+                        newNode->rollNo = data;
+                        struct node* last;
+                        last = head;
+                        while(last->next != head)
+                            last = last->next;
+                        newNode->next = head;
+                        head = newNode;
+                        last->next = newNode;
                     }
-                    prevPtr->next = newNode;
-                    newNode->next = ptr;
+                    else{
+                        newNode->rollNo = data;
+                        struct node *ptr;
+                        ptr = start;
+                        while(ptr->rollNo != val){
+                            printf("\nTraversing through the List...");
+                            prevPtr = ptr;
+                            ptr = ptr->next;
+                        }
+                        prevPtr->next = newNode;
+                        newNode->next = ptr;
+                    }
                 }
+                else
+                    printf("\nError:- Entered Node is not present in Linked List...");
             }
             else
-                printf("\nError:- Entered Node is not present in Linked List...");
+                printf("\nError:- Couldn't allocate space for node...");
         }
         else
-            printf("\nError:- Couldn't allocate space for node...");
+            printf("\nError:- Entered element is not present in Linked List...");
     }
     else
         printf("\nError:- EMPTY LIST!!! Can't perform opertaton...");
