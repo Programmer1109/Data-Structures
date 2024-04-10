@@ -108,8 +108,9 @@ int main(){
 struct node* insert_at_begin(struct node* head){
     //printf("\nInserting Node at the Start of List...");
     struct node* newNode;
-    int data; 
-    printf("\nEnter data for node:- ");
+    int data;
+    //char *name; 
+    printf("\nEnter Roll No.:- ");
     scanf("%d", &data);
     newNode = (struct node*) malloc(sizeof(struct node));
     if (newNode == NULL)
@@ -125,63 +126,79 @@ struct node* insert_at_begin(struct node* head){
 }
 
 struct node* insert_before_node(struct node* head){
-    //printf("\nInserting Node Before given Node...");
-    struct node* newNode;
-    struct node *ptr, *prevPtr;
-    int data, val;
-    printf("\nEnter the Roll No. before which node is to be inserted:- ");
-    scanf("%d", &val);
-    printf("\nEnter data for the node:- ");
-    scanf("%d", &data);
-    newNode = (struct node*) malloc(sizeof(struct node));
-    if(newNode != NULL){
-        printf("\nSuccess:- Memory Allocated Successfully...");    
-        newNode->rollNo = data;
-        if(head->rollNo == val){
-            newNode->next = head;
-            head = newNode;
-        }
-        else{
-            ptr = start;
-            while(ptr->rollNo != val){
-                //printf("\nTraversing through the List...");
-                prevPtr = ptr;
-                ptr = ptr->next;
+    printf("\nInserting Node Before given Node...");
+    if(head != NULL){
+        struct node* newNode;
+        struct node *ptr, *prevPtr;
+        int data, val;
+        printf("\nEnter the Roll No. before which node is to be inserted:- ");
+        scanf("%d", &val);
+        if(searching(head, val) != -1){
+            printf("\nEnter data for the node:- ");
+            scanf("%d", &data);
+            newNode = (struct node*) malloc(sizeof(struct node));
+            if(newNode != NULL){
+                printf("\nSuccess:- Memory Allocated Successfully...");    
+                newNode->rollNo = data;
+                if(head->rollNo == val){
+                    newNode->next = head;
+                    head = newNode;
+                }
+                else{
+                    ptr = start;
+                    while(ptr->rollNo != val){
+                        //printf("\nTraversing through the List...");
+                        prevPtr = ptr;
+                        ptr = ptr->next;
+                    }
+                    prevPtr->next = newNode;
+                    newNode->next = ptr;
+                }
             }
-            prevPtr->next = newNode;
-            newNode->next = ptr;
+            else
+                printf("\nError:- Couldn't allocate space for node...");
         }
+        else
+            printf("\nError:- Entered value is not present in linked list...");
     }
     else
-        printf("\nError:- Couldn't allocate space for node...");
+        printf("\nError:- EMPTY LIST!!! Can't perform operation...");
     return head;
 }
 
 struct node* insert_after_node(struct node* head){
     printf("\nInserting Node After given Node...");
-    struct node* newNode;
-    struct node *ptr, *nextPtr;
-    int data, val;
-    printf("\nEnter the Roll No. after which node is to be inserted:- ");
-    scanf("%d", &val);
-    printf("\nEnter data for the node:- ");
-    scanf("%d", &data);
-    newNode = (struct node*) malloc(sizeof(struct node));
-    if(newNode != NULL){
-        printf("\nSuccess:- Memory Allocated Successfully...\n");
-        newNode->rollNo = data;
-        ptr = start;
-        nextPtr = start->next;
-        while(ptr->rollNo != val){
-            //printf("Traversing through the List...\n");
-            ptr = ptr->next;
-            nextPtr = ptr->next;
+    if(head != NULL){
+        struct node* newNode;
+        struct node *ptr, *nextPtr;
+        int data, val;
+        printf("\nEnter the Roll No. after which node is to be inserted:- ");
+        scanf("%d", &val);
+        if(searching(head, val) != -1){
+            printf("\nEnter data for the node:- ");
+            scanf("%d", &data);
+            newNode = (struct node*) malloc(sizeof(struct node));
+            if(newNode != NULL){
+                printf("\nSuccess:- Memory Allocated Successfully...\n");
+                newNode->rollNo = data;
+                ptr = start;
+                nextPtr = start->next;
+                while(ptr->rollNo != val){
+                    //printf("Traversing through the List...\n");
+                    ptr = ptr->next;
+                    nextPtr = ptr->next;
+                }
+                ptr->next = newNode;
+                newNode->next = nextPtr;
+            }
+            else
+                printf("\nError:- Couldn't allocate space for node...");
         }
-        ptr->next = newNode;
-        newNode->next = nextPtr;
+        else
+            printf("\nError:- Entered value is not present in linked list...");
     }
     else
-        printf("\nError:- Couldn't allocate space for node...");
+        printf("\nError:- EMPTY LIST!!! Can't perform operaton...");
     return head;
 }
 
@@ -236,20 +253,24 @@ struct node* delete_before_node(struct node* head){
     if(start != NULL){
         printf("\nEnter the Roll No. of the node before which deletion is to take place: ");
         scanf("%d", &data);
-        if(head->rollNo == data)
-            printf("\nError:- No Node before this node. Deletion can't be performed...");
-        else{
-            ptr = start;
-            nextPtr = start->next;
-            while(nextPtr->rollNo != data){
-                prevPtr = ptr;
-                ptr = ptr->next;
-                nextPtr = ptr->next;
+        if(searching(head, data) != -1){
+            if(head->rollNo == data)
+                printf("\nError:- No Node before this node. Deletion can't be performed...");
+            else{
+                ptr = start;
+                nextPtr = start->next;
+                while(nextPtr->rollNo != data){
+                    prevPtr = ptr;
+                    ptr = ptr->next;
+                    nextPtr = ptr->next;
+                }
+                //printf("\nPrevPtr-> %d %x\nPtr-> %d %x\nNextPtr-> %d %x", prevPtr->rollNo, prevPtr->next, ptr->rollNo, ptr->next, nextPtr->rollNo, nextPtr->next);
+                prevPtr->next = nextPtr;
+                free(ptr);
             }
-            //printf("\nPrevPtr-> %d %x\nPtr-> %d %x\nNextPtr-> %d %x", prevPtr->rollNo, prevPtr->next, ptr->rollNo, ptr->next, nextPtr->rollNo, nextPtr->next);
-            prevPtr->next = nextPtr;
-            free(ptr);
         }
+        else
+            printf("\nError:- Entered node is not present in the linked list...");
     }
     else
         printf("\nError:- EMPTY Linked List...\n");
@@ -265,23 +286,27 @@ struct node* delete_after_node(struct node* head){
     if(start != NULL){
         printf("\nEnter the Roll No. of the node before which deletion is to take place: ");
         scanf("%d", &data);
-        last = start;
-        while(last->next != NULL)
-            last = last->next;
-        if(last->rollNo == data){
-            printf("\nError:-  No Node after this node. Deletion can't be performed...");
-        }
-        else{   
-            ptr = start;
-            nextPtr = start->next;
-            while(ptr->rollNo != data){
-                ptr = ptr->next;
-                nextPtr = ptr->next;
+        if(searching(head, data) != -1){
+            last = start;
+            while(last->next != NULL)
+                last = last->next;
+            if(last->rollNo == data){
+                printf("\nError:-  No Node after this node. Deletion can't be performed...");
             }
-            //printf("\nPtr-> %d %x\nNextPtr-> %d %x", ptr->rollNo, ptr->next, nextPtr->rollNo, nextPtr->next);
-            ptr->next = nextPtr->next;
-            free(nextPtr);
+            else{   
+                ptr = start;
+                nextPtr = start->next;
+                while(ptr->rollNo != data){
+                    ptr = ptr->next;
+                    nextPtr = ptr->next;
+                }
+                //printf("\nPtr-> %d %x\nNextPtr-> %d %x", ptr->rollNo, ptr->next, nextPtr->rollNo, nextPtr->next);
+                ptr->next = nextPtr->next;
+                free(nextPtr);
+            }
         }
+        else
+            printf("\nError:- Entered Node is not present in the Linked List...");
     }
     else
         printf("\nError:- EMPTY Linked List...");
@@ -309,14 +334,16 @@ struct node* delete_end(struct node* head){
 
 struct node* destroy_list(struct node* head){
     printf("Destroying the entire list...\n");
-    struct node* current;
-    struct node* nextPointer;
-    current = head;
     if(head != NULL){
+        struct node* current;
+        struct node* nextPointer;
+        current = head;
         while(current != NULL){
             //printf("\nDeleting Node with Roll No. %d ...\n", current->rollNo);
+            printf("\nCurrent-> Roll No.:- %d\tAddress:- %x", current->rollNo,current->next);
             nextPointer = current->next;
             free(current);
+            printf("\nCurrent-> Roll No.:- %d\tAddress:- %x", current->rollNo,current->next);
             current = nextPointer;
         }
         head = current;
