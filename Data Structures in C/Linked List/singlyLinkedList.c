@@ -32,7 +32,7 @@ int main(){
     printf("\t\t\t\tSINGLY LINKED LIST in C IMPLEMENTATION\n");
     int option, index, num, length;
     do{
-    printf("\n********** MAIN MENU **********");
+    printf("\n\n********** MAIN MENU **********");
     printf("\n\t1. Insert node at begining");
     printf("\n\t2. Insert node at end");
     printf("\n\t3. Insert node before given node");
@@ -105,6 +105,7 @@ int main(){
     return 0;
 }
 
+/*      Functions for Insertion Operations       */
 struct node* insert_at_begin(struct node* head){
     //printf("\nInserting Node at the Start of List...");
     struct node* newNode;
@@ -133,7 +134,8 @@ struct node* insert_before_node(struct node* head){
         int data, val;
         printf("\nEnter the Roll No. before which node is to be inserted:- ");
         scanf("%d", &val);
-        if(searching(head, val) != -1){
+        int index = searching(head, val);
+        if(index != -1){
             printf("\nEnter data for the node:- ");
             scanf("%d", &data);
             newNode = (struct node*) malloc(sizeof(struct node));
@@ -158,6 +160,8 @@ struct node* insert_before_node(struct node* head){
             else
                 printf("\nError:- Couldn't allocate space for node...");
         }
+        else if(index == -1)
+            printf("\nError:- Entered Node is not present in the List...");    
         else
             printf("\nError:- Entered value is not present in linked list...");
     }
@@ -229,7 +233,7 @@ struct node* insert_at_end(struct node* head){
     return head;
 }
 
-
+/*      Fucntions of Deletion Operations        */
 struct node* delete_begin(struct node* head){
     printf("\nDeleting the first Node...\n");
     struct node* temp = head;
@@ -284,7 +288,7 @@ struct node* delete_after_node(struct node* head){
     struct node* nextPtr;
     int data;
     if(start != NULL){
-        printf("\nEnter the Roll No. of the node before which deletion is to take place: ");
+        printf("\nEnter the Roll No. of the node after which deletion is to take place: ");
         scanf("%d", &data);
         if(searching(head, data) != -1){
             last = start;
@@ -332,6 +336,7 @@ struct node* delete_end(struct node* head){
     return head;
 }
 
+/*          Function for Deleting the Entire List       */
 struct node* destroy_list(struct node* head){
     printf("Destroying the entire list...\n");
     if(head != NULL){
@@ -353,6 +358,7 @@ struct node* destroy_list(struct node* head){
     return head;
 }
 
+/*          Function to Display Linked List     */
 void display_list(struct node* head){
     printf("\nDisplaying the Linked List...\n");
     struct node* ptr = head;
@@ -366,7 +372,7 @@ void display_list(struct node* head){
     } 
 }
 
-// Not Working
+/*          Function for Searching Operation       */
 int searching(struct node* head, int key){
     printf("\nSearching for Node in the Singly Linked List...");
     //printf("\nkey= %d", key);
@@ -395,6 +401,7 @@ int searching(struct node* head, int key){
     }
 }
 
+/*          Function to Calculate Length of List      */
 int length_of_list(struct node* head){
     printf("\nCouting nodes of the Linked List...");
     if(head == NULL)
